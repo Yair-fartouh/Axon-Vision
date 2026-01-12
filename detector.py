@@ -36,8 +36,9 @@ def detector(input_queue, output_queue):
                 logger.debug(f"Motion detected in frame {counter}. Contours found: {len(cnts)}")
 
             for c in cnts:
-                x, y, w, h = cv2.boundingRect(c)
-                boxes.append((x, y, w, h))
+                if int(cv2.contourArea(c)) > 80:
+                    x, y, w, h = cv2.boundingRect(c)
+                    boxes.append((x, y, w, h))
             prev_frame = gray_frame
         counter += 1
         output_queue.put((frame, boxes))
