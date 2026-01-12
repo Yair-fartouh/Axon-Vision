@@ -8,6 +8,9 @@ def presenter(input_queue):
             break
         frame, boxes = item
         for (x, y, w, h) in boxes:
+            roi = frame[y:y+h, x:x+w]
+            blurred = cv2.GaussianBlur(roi, (21, 21), 0)
+            frame[y:y+h, x:x+w] = blurred
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         timestamp = datetime.now().strftime("%H:%M:%S")
         cv2.putText(frame, timestamp, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
