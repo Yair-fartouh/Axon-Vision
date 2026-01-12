@@ -1,8 +1,14 @@
 import cv2
 from datetime import datetime
+from logger import Logger
+
+logger = Logger.get_logger(__name__)
 
 def presenter(input_queue):
+    logger.info("Starting presenter process")
+
     while True:
+        logger.debug("Waiting for processed frame...")
         item = input_queue.get()
         if item is None:
             break
@@ -18,3 +24,4 @@ def presenter(input_queue):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cv2.destroyAllWindows()
+    logger.info(f"Presenter process completed. Total frames displayed: {frame_count}")
