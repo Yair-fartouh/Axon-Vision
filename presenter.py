@@ -1,0 +1,17 @@
+import cv2
+from datetime import datetime
+
+def presenter(input_queue):
+    while True:
+        item = input_queue.get()
+        if item is None:
+            break
+        frame, boxes = item
+        for (x, y, w, h) in boxes:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        cv2.putText(frame, timestamp, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.imshow("Video Pipeline", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    cv2.destroyAllWindows()
